@@ -1,0 +1,108 @@
+:root {
+    --primary: #e0d4ff;
+    --secondary: #9d85e0;
+    --accent: #ffb7d5;
+    --bg-grad: linear-gradient(135deg, #f5f0ff 0%, #e0d4ff 100%);
+    --white: #ffffff;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-grad);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    color: #444;
+    font-size: 18px;
+}
+
+#app {
+    width: 95%; max-width: 550px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    margin: 10px; padding: 40px 20px;
+    border-radius: 40px;
+    box-shadow: 0 15px 35px rgba(157, 133, 224, 0.15);
+    text-align: center;
+    position: relative;
+}
+
+header h1 { color: var(--secondary); margin-bottom: 30px; font-size: 2.8rem; }
+h2 { font-size: 1.8rem; margin-bottom: 25px; }
+.hidden { display: none !important; }
+
+nav { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 30px; }
+
+button {
+    border: none; border-radius: 50px; padding: 12px 24px;
+    background: var(--white); color: var(--secondary);
+    font-weight: bold; font-size: 1.1rem; cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 6px 15px rgba(157, 133, 224, 0.2); margin: 5px;
+}
+button:hover { transform: scale(1.05); background: var(--secondary); color: white; }
+
+.btn-main {
+    background: linear-gradient(to right, #9d85e0, #b2a0e8) !important;
+    color: white !important; width: 90%; margin-top: 20px; padding: 18px; font-size: 1.3rem;
+}
+
+input, select {
+    width: 85%; padding: 15px; margin: 10px 0;
+    border: 3px solid var(--primary); border-radius: 40px;
+    outline: none; font-size: 1.1rem; background: rgba(255, 255, 255, 0.9);
+}
+
+.card-wrapper { perspective: 1000px; margin: 30px auto; width: 300px; height: 220px; }
+.card { width: 100%; height: 100%; position: relative; transition: transform 0.6s; transform-style: preserve-3d; cursor: pointer; }
+.card.flipped { transform: rotateY(180deg); }
+.card-face {
+    position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; font-weight: bold; border-radius: 35px; background: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 20px;
+}
+.card-back { transform: rotateY(180deg); color: var(--secondary); }
+
+.heart-btn {
+    width: 80px;
+    height: 80px;
+    border: none;
+    cursor: pointer;
+    font-size: 32px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent; /* 背景色を透明にする */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    color: white !important;
+    box-shadow: none !important; /* 丸い影を消す */
+    border-radius: 0 !important; /* 丸める設定を強制解除 */
+}
+
+/* ホバーした時に大きくする演出だけ残す */
+.heart-btn:hover {
+    transform: scale(1.1);
+    background-color: transparent !important;
+}
+
+.x-mark { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff9da7"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'); }
+.triangle-mark { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd082"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'); }
+.check-mark { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23a2e8c4"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'); }
+
+#account-btn i { color: var(--secondary); font-size: 2.2rem; }
+/* 単語リスト内のボタン用調整 */
+.word-item button {
+    margin: 0 5px;
+    font-size: 1.2rem;
+}
+
+.word-item button:hover {
+    transform: scale(1.2);
+    background: transparent; /* リスト内のアイコンは背景色を変えない */
+}

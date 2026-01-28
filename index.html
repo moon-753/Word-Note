@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Note</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="app" style="padding: 40px 10px; display: flex; flex-direction: column; align-items: center;">
+        <header style="position: relative; width: 100%;">
+            <div id="account-menu-container" class="hidden" style="position: absolute; left: 0px; top: 0px;">
+                <button id="account-btn" onclick="toggleAccountMenu()" style="background:none; box-shadow:none; padding:0; width:auto;">
+                    <i class="fas fa-user-circle"></i>
+                </button>
+                <div id="account-dropdown" class="hidden" style="position: absolute; left: 0; top: 50px; background: white; padding: 15px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 100; min-width: 180px;">
+                    <p id="user-email-display" style="font-size: 0.8rem; color: #666; margin-bottom: 10px; word-break: break-all;"></p>
+                    <button onclick="handleSignOut()" style="width: 100%; font-size: 0.8rem; background: #ff9da7; color: white; padding: 10px; border-radius: 50px;">ログアウト</button>
+                </div>
+            </div>
+            <h1 style="text-align: center;"><i class="fas fa-book-open"></i> Word Note</h1>
+        </header>
+
+        <section id="auth-section" class="view">
+            <div style="background: white; padding: 30px; border-radius: 30px; box-shadow: 0 10px 25px rgba(157,133,224,0.1);">
+                <h2>Welcome</h2>
+                <input type="email" id="auth-email" placeholder="メールアドレス">
+                <input type="password" id="auth-password" placeholder="パスワード">
+                <button onclick="handleSignIn()" class="btn-main">ログイン</button>
+                <button onclick="handleSignUp()" style="background:none; box-shadow:none; color:var(--secondary); font-size:0.9rem; width:100%;">新規登録はこちら</button>
+            </div>
+        </section>
+
+        <nav id="main-nav" class="hidden" style="display: flex; justify-content: center; flex-wrap: wrap;">
+            <button onclick="showView('input-view')">単語登録</button>
+            <button onclick="showView('list-view')">単語帳</button>
+            <button onclick="showView('study-view')">暗記練習</button>
+            <button onclick="showView('test-view')">テスト</button>
+        </nav>
+
+        <section id="input-view" class="view hidden" style="width: 100%;">
+            <h2>新しい単語を登録</h2>
+            <div class="input-group">
+                <input type="text" id="eng-input" placeholder="English">
+                <input type="text" id="jpn-input" placeholder="日本語">
+                <button onclick="addWord()" class="btn-main">追加する</button>
+            </div>
+        </section>
+
+        <section id="list-view" class="view hidden" style="width: 100%;">
+            <h2>単語リスト</h2>
+            <div id="word-list-container"></div>
+        </section>
+
+        <section id="study-view" class="view hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+            <h2 style="margin-bottom: 15px;">暗記練習</h2>
+            
+            <div class="settings" style="width: 100%; max-width: 300px; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <select id="study-order" style="width: 100%; padding: 12px;"><option value="normal">順番通り</option><option value="random">ランダム</option></select>
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <select id="study-mode" style="flex: 1; padding: 12px;"><option value="en-jp">英 → 日</option><option value="jp-en">日 → 英</option></select>
+                    <button onclick="startStudy()" style="margin: 0; padding: 0 20px; height: 48px;">開始</button>
+                </div>
+            </div>
+            
+            <div id="study-container" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                <div style="height: 240px; display: flex; justify-content: center; align-items: flex-start; width: 100%; margin-bottom: 12px; padding-top: 10px;">
+                    <div class="card-wrapper" style="margin: 0;">
+                        <div id="flashcard" class="card" onclick="flipCard()">
+                            <div class="card-face card-front" id="card-front"></div>
+                            <div class="card-face card-back" id="card-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grading-buttons" style="display: flex; justify-content: center; gap: 20px; width: 300px;">
+                    <button class="heart-btn x-mark" onclick="gradeWord('miss')">×</button>
+                    <button class="heart-btn triangle-mark" onclick="gradeWord('so-so')">△</button>
+                    <button class="heart-btn check-mark" onclick="gradeWord('perfect')">○</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="test-view" class="view hidden" style="width: 100%;">
+            <h2>テスト</h2>
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <button onclick="startTest()" class="btn-main">テスト開始</button>
+                <div id="test-container" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                    <p id="test-question" style="font-size: 1.5rem; margin: 20px 0; font-weight: bold;"></p>
+                    <input type="text" id="test-answer" placeholder="答えを入力..." style="width: 85%;">
+                    <button onclick="checkTestAnswer()" class="btn-main">回答</button>
+                </div>
+                <div id="test-result" class="hidden">
+                    <div id="result-lists" style="font-size: 1.2rem; margin: 20px 0; color: var(--secondary); font-weight: bold;"></div>
+                    <button onclick="showView('input-view')" class="btn-main">戻る</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAu59nJKgx4DY_Z9w46b9BVbjDaQOia_3w",
+            authDomain: "word-note-d7b8f.firebaseapp.com",
+            projectId: "word-note-d7b8f",
+            storageBucket: "word-note-d7b8f.firebasestorage.app",
+            messagingSenderId: "401338257186",
+            appId: "1:401338257186:web:e4c1599d11bb608e555f7b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.firebaseAuth = auth;
+        window.db = db;
+        window.createUser = createUserWithEmailAndPassword;
+        window.signIn = signInWithEmailAndPassword;
+        window.logOut = signOut;
+        window.fs = { collection, addDoc, query, where, getDocs, serverTimestamp };
+
+        const script = document.createElement('script');
+        script.src = 'script.js';
+        document.body.appendChild(script);
+    </script>
+</body>
+</html>
