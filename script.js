@@ -18,21 +18,31 @@ function toggleAccountMenu() {
 }
 
 async function handleSignUp() {
-    const email = document.getElementById('auth-email').value;
+    const email = document.getElementById('auth-email').value.trim();
     const pass = document.getElementById('auth-password').value;
+
+    if (!email) return alert("メールアドレスを入力してね");
+    if (!pass) return alert("パスワードを入力してね");
+
     try {
         await window.createUser(window.firebaseAuth, email, pass);
         alert("新規登録に成功しました！");
-    } catch (error) { alert("登録エラー: " + error.message); }
+    } catch (error) {
+        alert("登録エラー: " + error.message);
+    }
 }
 
 async function handleSignIn() {
-    const email = document.getElementById('auth-email').value;
+    const email = document.getElementById('auth-email').value.trim();
     const pass = document.getElementById('auth-password').value;
+
     if (!window.firebaseAuth) return alert("Firebaseが準備中です");
+
     try {
         await window.signIn(window.firebaseAuth, email, pass);
-    } catch (error) { alert("ログイン失敗: " + error.message); }
+    } catch (error) {
+        alert("ログイン失敗: " + error.message);
+    }
 }
 
 function handleSignOut() {
