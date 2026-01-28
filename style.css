@@ -106,3 +106,19 @@ input, select {
     transform: scale(1.2);
     background: transparent; /* リスト内のアイコンは背景色を変えない */
 }
+#ebp-footer {
+    margin-top: 40px;
+    font-size: 0.7rem;
+    color: #aaa;
+    text-align: center;
+}
+
+#ebp-footer a {
+    color: #aaa;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+}
+
+#ebp-footer a:hover {
+    color: #9d85e0;
+}
