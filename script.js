@@ -21,8 +21,8 @@ async function handleSignUp() {
     const email = document.getElementById('auth-email').value.trim();
     const pass = document.getElementById('auth-password').value;
 
-    if (!email) return alert("メールアドレスを入力してね");
-    if (!pass) return alert("パスワードを入力してね");
+    if (!email) return alert("先にメールアドレスを入力してね");
+    if (!pass) return alert("先にパスワードを入力してね");
 
     try {
         await window.createUser(window.firebaseAuth, email, pass);
